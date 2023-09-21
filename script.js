@@ -27,20 +27,34 @@ generateBtn.addEventListener("click", writePassword);
 // }
 var passwordText = document.querySelector("#password");
 
-
+var passwordCharLength;
 var lowercase = [false, "no  "];
 var uppercase = [false, "no  "];
 var numeric = [false, "no  "];
 var specialCharacter = [false, "no  "];
+var lowercaseLetters = "abcdefghijclmnopqrstuvwxyz"
 
 function writePassword() {
-askLowercase();
+password = "";
+passwordText.value = password;
+passwordLength();
 }
+
+function passwordLength() {
+  passwordCharLength = (prompt("Select amount of characters in password"));
+    if (passwordCharLength >= 8 && passwordCharLength <= 128) {
+      askLowercase();
+    } else { 
+      alert("password must be between 8 and 128 characters");
+      passwordLength();
+    }
+  }
 
 function askLowercase() {
   if (confirm("Include lowercase?")) {
-    lowercase[0] = true;
+    // lowercase[0] = true;
     lowercase[1] = "yes  ";
+    possibleChoices = "abcdefghijklmnopqrstuvwxyz";
     askUppercase();
   } else {
     askUppercase();
@@ -49,8 +63,9 @@ function askLowercase() {
 
 function askUppercase() {
   if (confirm("Include uppercase?")) {
-    uppercase[0] = true;
+    // uppercase[0] = true;
     uppercase[1] = "yes  ";
+    possibleChoices = possibleChoices + "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     askNumeric();
   } else {
     askNumeric();
@@ -59,8 +74,9 @@ function askUppercase() {
 
 function askNumeric() {
   if (confirm("Include number?")) {
-    numeric[0] = true;
+    // numeric[0] = true;
     numeric[1] = "yes  ";
+    possibleChoices = possibleChoices + "0123456789";
     askSpecialCharacter();
   } else {
     askSpecialCharacter();
@@ -69,8 +85,9 @@ function askNumeric() {
 
 function askSpecialCharacter() {
   if (confirm("Include special character?")) {
-    specialCharacter[0] = true;
+    // specialCharacter[0] = true;
     specialCharacter[1] = "yes  ";
+    possibleChoices = possibleChoices + "!@#$%^&*()=+-_[]|,./<>?";
     confirmChoices();
   } else {
     confirmChoices();
@@ -78,13 +95,44 @@ function askSpecialCharacter() {
 }
 
 function confirmChoices() {
-  if (confirm("Confirm choices: " + "Lowercase: " + lowercase[1] + "Uppercase: " + uppercase[1] + "Number: " + numeric[1] + "Special character: " + specialCharacter[1])) {
+  if (confirm("Confirm choices: " + "Password length: " + passwordCharLength + "  Lowercase: " + lowercase[1] + " Uppercase: " + uppercase[1] + " Number: " + numeric[1] + " Special character: " + specialCharacter[1])) {
     generatePassword();
+    console.log("possible choices = " + possibleChoices);
   } else {
+    console.log("possible choices = " + possibleChoices);
+    resetChoices();
     writePassword();
   }
 } 
 
-function generatePassword() {
-
+function resetChoices() {
+  lowercase = [false, "no  "];
+  uppercase = [false, "no  "];
+  numeric = [false, "no  "];
+  specialCharacter = [false, "no  "];
 }
+
+var password = "";
+var possibleChoices;
+var character;
+// var lowercaseO = "abcdefghijklmnopqrstuvwxyz";
+// var uppercaseO = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+// var numeric = "0123456789";
+// var specialCharacterO = "!@#$%^&*()=+-_[]|,./<>?";
+
+function generatePassword() {
+for (i=1; i<=passwordCharLength; i++) {
+  character = Math.floor(Math.random() * possibleChoices.length);
+  password += possibleChoices.charAt(character);
+  // password += character; 
+} console.log("password = " + password);
+passwordText.value = password;
+}
+
+// function possiblePasswordCharacters() {
+// if (password.includes)
+// }
+
+// function checkForLc () {
+//   if ()
+// }
