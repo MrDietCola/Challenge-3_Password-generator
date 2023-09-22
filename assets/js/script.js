@@ -2,14 +2,6 @@
 var generateBtn = document.querySelector("#generate");
 
 // Write password to the #password input
-// function writePassword() {
-//   var password = generatePassword();
-//   var passwordText = document.querySelector("#password");
-
-//   passwordText.value = password;
-
-// }
-
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
 
@@ -39,11 +31,13 @@ var possibleChoices = "";
 var character;
 var count = 0;
 
+// function that will be called by the listening click
 function writePassword() {
   resetChoices();
   passwordLength();
 }
 
+// prompt for user to choose how long the password will be
 function passwordLength() {
   passwordCharLength = (prompt("Select amount of characters in password"));
   if (passwordCharLength >= 8 && passwordCharLength <= 128) {
@@ -54,6 +48,7 @@ function passwordLength() {
   }
 }
 
+// confirm message to include lowercase letters
 function askLowercase() {
   if (confirm("Include lowercase?")) {
     lowercaseMessage = "yes  ";
@@ -65,8 +60,8 @@ function askLowercase() {
   }
 }
 
+// confirm message to include uppercase letters
 function askUppercase() {
-  console.log(possibleChoices);
   if (confirm("Include uppercase?")) {
     uppercaseMessage= "yes  ";
     isUppercasePresent = true;
@@ -77,8 +72,8 @@ function askUppercase() {
   }
 }
 
+// confirm message to include numbers
 function askNumber() {
-  console.log(possibleChoices);
   if (confirm("Include number?")) {
     numberMessage = "yes  ";
     isNumberPresent = true;
@@ -89,8 +84,8 @@ function askNumber() {
   }
 }
 
+// confirm message to include special characters
 function askSpecialCharacter() {
-  console.log(possibleChoices);
   if (confirm("Include special character?")) {
     specialCharacterMessage = "yes  ";
     isSpecialCharacterPresent = true;
@@ -101,11 +96,11 @@ function askSpecialCharacter() {
   }
 }
 
+// confirm message to user to confirm choices made for password
 function confirmChoices() {
-  console.log(possibleChoices);
   if (possibleChoices === "") {
     confirm("You must choose at least one criteria");
-    // writePassword();
+    writePassword();
   }
   if (confirm("Confirm choices: " + "Password length: " + passwordCharLength + "  Lowercase: " + lowercaseMessage + " Uppercase: " + uppercaseMessage + " Number: " + numberMessage + " Special character: " + specialCharacterMessage)) {
     generatePassword();
@@ -114,28 +109,29 @@ function confirmChoices() {
   }
 }
 
+// function to reset variables if user decides to generate another password
 function resetChoices() {
   lowercaseMessage = "no  ";
   uppercaseMessage = "no  ";
   numberMessage = "no  ";
   specialCharacterMessage = "no  ";
   possibleChoices = "";
-  console.log(possibleChoices);
   isLowercasePresent = false;
   isUppercasePresent = false;
   isNumberPresent = false;
   isSpecialCharacterPresent = false;
 }
 
+// function to generate a random password based of chosen length and characters from an array of criteria
 function generatePassword() {
- console.log("generate new password")
   count = 0;
   password = "";
   for (i = 1; i <= passwordCharLength; i++) {
     character = Math.floor(Math.random() * possibleChoices.length);
     password += possibleChoices.charAt(character);
   }
-console.log(password);
+
+// logic to ensure that the password includes at least one character from each of the chosen criteria
   if (isLowercasePresent) {
     count = 0;
     for (var i = 0; i < password.length; i++) {
@@ -143,7 +139,6 @@ console.log(password);
         count += 1;
       } 
     }
-      console.log(count);
       if (count === 0) {
         generatePassword();
       }
@@ -156,7 +151,6 @@ console.log(password);
         count += 1;
       } 
     }
-      console.log(count);
       if (count === 0) {
         generatePassword();
       }
@@ -169,7 +163,6 @@ console.log(password);
         count += 1;
       } 
     }
-      console.log(count);
       if (count === 0) {
         generatePassword();
       }
@@ -182,11 +175,11 @@ console.log(password);
         count += 1;
       } 
     }
-      console.log(count);
       if (count === 0) {
         generatePassword();
       }
   }
 
+// sets the text value on the html to the generated password
   passwordText.value = password;
 }
