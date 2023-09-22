@@ -14,47 +14,51 @@ var generateBtn = document.querySelector("#generate");
 generateBtn.addEventListener("click", writePassword);
 
 
-
 // check passworkd length between 8 to 128 character
 // includes lowercase, uppercase, numeric and/or special characters
 // tell person what variables they have agreed on
 // display in alert or on page
 
-// function getUserChoice() {
-//   confirm("Include lowercase?") {
-//     if 
-//   }
-// }
 var passwordText = document.querySelector("#password");
 
 var passwordCharLength;
-var lowercase = [false, "no  "];
-var uppercase = [false, "no  "];
-var numeric = [false, "no  "];
-var specialCharacter = [false, "no  "];
-var lowercaseLetters = "abcdefghijclmnopqrstuvwxyz"
+var isLowercasePresent = false;
+var lowercaseMessage = "no   ";
+var isUppercasePresent = false;
+var uppercaseMessage = "no   ";
+var isNumberPresent = false;
+var numberMessage = "no   ";
+var isSpecialCharacterPresent = false;
+var specialCharacterMessage = "no  ";
+var lcArr = "abcdefghijclmnopqrstuvwxyz";
+var ucArr = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+var numArr = "0123456789"
+var scArr = "!@#$%^&*()=+-_[]|,./<>?";
+var password = "";
+var possibleChoices = "";
+var character;
+var count = 0;
 
 function writePassword() {
-password = "";
-passwordText.value = password;
-passwordLength();
+  resetChoices();
+  passwordLength();
 }
 
 function passwordLength() {
   passwordCharLength = (prompt("Select amount of characters in password"));
-    if (passwordCharLength >= 8 && passwordCharLength <= 128) {
-      askLowercase();
-    } else { 
-      alert("password must be between 8 and 128 characters");
-      passwordLength();
-    }
+  if (passwordCharLength >= 8 && passwordCharLength <= 128) {
+    askLowercase();
+  } else {
+    alert("password must be between 8 and 128 characters");
+    passwordLength();
   }
+}
 
 function askLowercase() {
   if (confirm("Include lowercase?")) {
-    // lowercase[0] = true;
-    lowercase[1] = "yes  ";
-    possibleChoices = "abcdefghijklmnopqrstuvwxyz";
+    lowercaseMessage = "yes  ";
+    isLowercasePresent = true;
+    possibleChoices = possibleChoices.concat(lcArr);
     askUppercase();
   } else {
     askUppercase();
@@ -62,21 +66,23 @@ function askLowercase() {
 }
 
 function askUppercase() {
+  console.log(possibleChoices);
   if (confirm("Include uppercase?")) {
-    // uppercase[0] = true;
-    uppercase[1] = "yes  ";
-    possibleChoices = possibleChoices + "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    askNumeric();
+    uppercaseMessage= "yes  ";
+    isUppercasePresent = true;
+    possibleChoices = possibleChoices.concat(ucArr);
+    askNumber();
   } else {
-    askNumeric();
+    askNumber();
   }
 }
 
-function askNumeric() {
+function askNumber() {
+  console.log(possibleChoices);
   if (confirm("Include number?")) {
-    // numeric[0] = true;
-    numeric[1] = "yes  ";
-    possibleChoices = possibleChoices + "0123456789";
+    numberMessage = "yes  ";
+    isNumberPresent = true;
+    possibleChoices = possibleChoices.concat(numArr);
     askSpecialCharacter();
   } else {
     askSpecialCharacter();
@@ -84,10 +90,11 @@ function askNumeric() {
 }
 
 function askSpecialCharacter() {
+  console.log(possibleChoices);
   if (confirm("Include special character?")) {
-    // specialCharacter[0] = true;
-    specialCharacter[1] = "yes  ";
-    possibleChoices = possibleChoices + "!@#$%^&*()=+-_[]|,./<>?";
+    specialCharacterMessage = "yes  ";
+    isSpecialCharacterPresent = true;
+    possibleChoices = possibleChoices.concat(scArr);
     confirmChoices();
   } else {
     confirmChoices();
@@ -95,44 +102,91 @@ function askSpecialCharacter() {
 }
 
 function confirmChoices() {
-  if (confirm("Confirm choices: " + "Password length: " + passwordCharLength + "  Lowercase: " + lowercase[1] + " Uppercase: " + uppercase[1] + " Number: " + numeric[1] + " Special character: " + specialCharacter[1])) {
-    generatePassword();
-    console.log("possible choices = " + possibleChoices);
-  } else {
-    console.log("possible choices = " + possibleChoices);
-    resetChoices();
-    writePassword();
+  console.log(possibleChoices);
+  if (possibleChoices === "") {
+    confirm("You must choose at least one criteria");
+    // writePassword();
   }
-} 
+  if (confirm("Confirm choices: " + "Password length: " + passwordCharLength + "  Lowercase: " + lowercaseMessage + " Uppercase: " + uppercaseMessage + " Number: " + numberMessage + " Special character: " + specialCharacterMessage)) {
+    generatePassword();
+  } else {
+    resetChoices();
+  }
+}
 
 function resetChoices() {
-  lowercase = [false, "no  "];
-  uppercase = [false, "no  "];
-  numeric = [false, "no  "];
-  specialCharacter = [false, "no  "];
+  lowercaseMessage = "no  ";
+  uppercaseMessage = "no  ";
+  numberMessage = "no  ";
+  specialCharacterMessage = "no  ";
+  possibleChoices = "";
+  console.log(possibleChoices);
+  isLowercasePresent = false;
+  isUppercasePresent = false;
+  isNumberPresent = false;
+  isSpecialCharacterPresent = false;
 }
-
-var password = "";
-var possibleChoices;
-var character;
-// var lowercaseO = "abcdefghijklmnopqrstuvwxyz";
-// var uppercaseO = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-// var numeric = "0123456789";
-// var specialCharacterO = "!@#$%^&*()=+-_[]|,./<>?";
 
 function generatePassword() {
-for (i=1; i<=passwordCharLength; i++) {
-  character = Math.floor(Math.random() * possibleChoices.length);
-  password += possibleChoices.charAt(character);
-  // password += character; 
-} console.log("password = " + password);
-passwordText.value = password;
+ console.log("generate new password")
+  count = 0;
+  password = "";
+  for (i = 1; i <= passwordCharLength; i++) {
+    character = Math.floor(Math.random() * possibleChoices.length);
+    password += possibleChoices.charAt(character);
+  }
+console.log(password);
+  if (isLowercasePresent) {
+    count = 0;
+    for (var i = 0; i < password.length; i++) {
+      if (lcArr.includes(password.charAt(i))) {
+        count += 1;
+      } 
+    }
+      console.log(count);
+      if (count === 0) {
+        generatePassword();
+      }
+  }
+
+  if (isUppercasePresent) {
+    count = 0;
+    for (var i = 0; i < password.length; i++) {
+      if (ucArr.includes(password.charAt(i))) {
+        count += 1;
+      } 
+    }
+      console.log(count);
+      if (count === 0) {
+        generatePassword();
+      }
+  }
+   
+  if (isNumberPresent) {
+    count = 0;
+    for (var i = 0; i < password.length; i++) {
+      if (numArr.includes(password.charAt(i))) {
+        count += 1;
+      } 
+    }
+      console.log(count);
+      if (count === 0) {
+        generatePassword();
+      }
+  }
+  
+  if (isSpecialCharacterPresent) {
+    count = 0;
+    for (var i = 0; i < password.length; i++) {
+      if (scArr.includes(password.charAt(i))) {
+        count += 1;
+      } 
+    }
+      console.log(count);
+      if (count === 0) {
+        generatePassword();
+      }
+  }
+
+  passwordText.value = password;
 }
-
-// function possiblePasswordCharacters() {
-// if (password.includes)
-// }
-
-// function checkForLc () {
-//   if ()
-// }
