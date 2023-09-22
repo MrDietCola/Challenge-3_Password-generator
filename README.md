@@ -1,6 +1,6 @@
 # Challenge-3_Password-generator
 
-https://mrdietcola.github.io/AJSeidlerLandingPage/
+https://mrdietcola.github.io/Challenge-3_Password-generator/
 
 ## Description
 
